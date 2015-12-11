@@ -1,0 +1,167 @@
+#
+# Default settings for the simulation
+#
+# Total scenarios = 11 x 4 x 5 = 220
+## Scenario settings
+#----------Identification---------------------
+Scenario.name = Goldfish_%%Group.router%%_rng-%%MovementModel.rngSeed%%_buffer-%%Group.bufferSize%%
+Scenario.simulateConnections = true
+Scenario.updateInterval = 0.1
+#---------Sim Time---------------
+# 43200s == 12h
+# 86400s == 24h
+# 172800s == 48h
+# 604800s == 1 week
+Scenario.endTime = 604800
+WiFi80211.type = SimpleBroadcastInterface
+WiFi80211.transmitSpeed = 1M
+WiFi80211.transmitRange = 10
+
+# "Bluetooth" interface for all nodes
+btInterface.type = SimpleBroadcastInterface
+# Transmit speed of 2 Mbps = 250kBps
+# IEEE 802.11b: ~ 11 Mbits/s for 200 m
+btInterface.transmitSpeed = 1M
+btInterface.transmitRange = 10
+
+#-------------Groups------------
+Scenario.nrofHostGroups = 4
+
+#-------------Movement models----------------
+Group.bufferSize = [1000M; 500M; 200M; 150M; 100M; 50M; 40M; 30M; 20M; 10M; 5M;]
+#Group.bufferSize = 50M
+Group.routeType = 1
+Group.router = [EpidemicRouter; SprayAndWaitRouter; ProphetV2Router; DrincRouter;]
+#Group.router = ProphetV2Router
+Group.waitTime = 10, 30
+Group.speed = 1, 3
+Group1.nrofInterfaces = 2
+Group2.nrofInterfaces = 1
+Group3.nrofInterfaces = 1
+Group4.nrofInterfaces = 1
+Group1.interface1 = btInterface
+Group1.interface2 = WiFi80211
+Group2.interface1 = btInterface
+Group3.interface1 = WiFi80211
+Group4.interface1 = WiFi80211
+
+SprayAndWaitRouter.binaryMode = true
+SprayAndWaitRouter.nrofCopies = 8
+
+ProphetRouter.secondsInTimeUnit = 30
+ProphetV2Router.secondsInTimeUnit = 30
+
+DRINC.nrofCopies = 2
+#12 hour to update delivery probabilities
+DRINC.secondsInTimeUnit = 43200
+
+#-------------------------------Routes--------------------------------------------
+Group1.groupID = GW1_
+Group1.nrofHosts = 1
+Group1.movementModel = StationaryMovement
+Group1.nodeLocation = 1250, 830
+# Group1.okMaps = 1
+
+Group2.groupID= WSN_
+Group2.nrofHosts = 5
+#Group2.movementModel = MapRouteMovement
+Group2.movementModel = ShortestPathMapBasedMovement
+#Group2.routeFile= data/Goldfish/WSN.wkt
+Group2.okMaps = 2
+
+Group3.groupID= MAP_
+Group3.nrofHosts = 10
+Group3.movementModel = MapRouteMovement
+#Group3.movementModel = ShortestPathMapBasedMovement
+Group3.routeFile= data/Goldfish/MAPs.wkt
+Group3.okMaps = 1
+
+Group4.groupID = ICS_
+Group4.nrofHosts = 1
+Group4.movementModel = StationaryMovement
+Group4.nodeLocation = 3960, 3050
+
+#----------------------------------------------------------------------------------------------
+MapBasedMovement.nrofMapFiles = 2
+MapBasedMovement.mapFile1 = data/Goldfish/MAPs.wkt
+MapBasedMovement.mapFile2 = data/Goldfish/WSN.wkt
+#MapBasedMovement.mapFile3 = data/Goldfish/Connection_Lines.wkt
+
+#-------------------Messages----------------------------
+# How many event generators
+Events.nrof = 1
+#Class of the first event generator
+Events1.class = MessageEventGenerator
+
+#-----------------------Intervals [seconds]---------------
+Events1.interval = 3600, 7200
+
+#------------------------Message sizes [Bytes] -------------
+Events1.size = 2000, 2000
+
+#---------------------Sources and destinations--------------------
+#Source
+Events1.hosts = 1,6
+#Destinations
+Events1.tohosts = 16,17
+
+#-------------------------Messages IDs-----------------------
+Events1.prefix = A
+
+#------------Simulation parameters-------------------
+#MovementModel.rngSeed = 1
+MovementModel.rngSeed = [1; 2; 3; 4; 5;]
+# MovimentModel.worldSize = 10000, 10000
+MovementModel.worldSize = 6000, 6000
+MovementModel.warmup = 10
+
+#----------------------Report number-----------------
+Report.nrofReports = 9
+
+#----------------------Warmup time------------------
+Report.warmup = 0
+Report.granularity = 1
+
+#----------------------Output folder-----------------
+Report.reportDir = my_reports/Scenario3MapRoute
+
+Report.report1 = MessageStatsReport
+Report.report2 = DeliveredMessagesReport
+Report.report3 = ContactsPerHourReport
+Report.report4 = CreatedMessagesReport
+Report.report5 = DistanceDelayReport
+Report.report6 = MessageGraphvizReport
+Report.report7 = MessageDeliveryReport
+Report.report8 = MessageDelayReport
+Report.report9 = MessageReport
+#Report.report10 = MessageLocationReport
+#MessageLocationReport.granularity = 1
+#MessageLocationReport.messages = 1
+#Report.report11 = EventLogReport
+
+
+#------------------------------------------------
+
+
+
+## Optimization settings -- these affect the speed of the simulation
+## see World class for details.
+#Optimization.cellSizeMult = 2
+Optimization.cellSizeMult = 5
+Optimization.randomizeUpdateOrder = true
+
+## GUI settings
+
+# GUI underlay image settings
+GUI.UnderlayImage.fileName = data/Goldfish/MapaGoldfish.PNG
+# Image offset in pixels (x, y)
+GUI.UnderlayImage.offset = 64, 20
+# Scaling factor for the image
+GUI.UnderlayImage.scale = 4.75
+# Image rotation (radians)
+GUI.UnderlayImage.rotate = -0.015
+
+# how many events to show in the log panel (default = 30)
+GUI.EventLogPanel.nrofEvents = 100
+# Regular Expression log filter (see Pattern-class from the Java API for RE-matching details)
+#GUI.EventLogPanel.REfilter = .*p[1-9]<->p[1-9]$
