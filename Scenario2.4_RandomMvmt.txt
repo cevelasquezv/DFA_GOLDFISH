@@ -3,7 +3,7 @@
 #
 # Total scenarios = 11 x 4 x 5 = 220
 ## Scenario settings
-# Changes in DrincRouter2 (probability updating) dp^deltas
+# Changes in DrincRouter (probability updating) dp^deltas
 # python del_ratio.py > 20151130_6x6km_12h_inf_5M_15101_data.in
 #----------Identification---------------------
 #Scenario.name = Goldfish2Test11
@@ -35,7 +35,7 @@ Scenario.nrofHostGroups = 4
 Group.bufferSize = [1000M; 500M; 200M; 150M; 100M; 50M; 40M; 30M; 20M; 10M; 5M;]
 #Group.bufferSize = 50M
 Group.routeType = 1
-Group.router = [EpidemicRouter; SprayAndWaitRouter; ProphetV2Router; DrincRouter2;]
+Group.router = [EpidemicRouter; SprayAndWaitRouter; ProphetV2Router; DrincRouter;]
 #Group.router = ProphetV2Router
 Group.waitTime = 10, 30
 Group.speed = 1, 3
